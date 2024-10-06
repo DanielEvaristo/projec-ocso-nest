@@ -36,6 +36,12 @@ export class EmployeesController {
     return this.employeesService.findOne(id);
   }
 
+  @Auth(ROLES.MANAGER)
+  @Get('/location/:id')
+  findAllLocation(@Param('id')id: string){
+    
+  }
+
   @Auth(ROLES.EMPLOYEE)
   @Patch(':id')
   update(@Param('id', new ParseUUIDPipe({version:'4'})) id: string, @Body() updateEmployeeDto: UpdateEmployeeDto) {

@@ -9,13 +9,13 @@ export class Employee {
     @Column('text')
     employeeName: string;
     @Column('text')
-    EmployeeLastName: string;
+    employeeLastName: string;
     @Column('text')
-    EmployeePhoneNumber: string;
+    employeePhoneNumber: string;
     @Column('text',{
         unique: true
     })
-    EmployeeEmail: string;
+    employeeEmail: string;
     @Column({
         type: 'text',
         nullable: true,
