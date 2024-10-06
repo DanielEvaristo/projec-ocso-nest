@@ -5,12 +5,27 @@ import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ROLES } from 'src/auth/constants/roles.constants';
 import { Auth } from 'src/auth/decorators/auth.decorator';
+import { ApiResponse } from '@nestjs/swagger';
+import { Employee } from './entities/employee.entity';
+import { ApiAuth } from 'src/auth/decorators/api.decorator';
 
+@ApiAuth()
 @Controller('employees')
 export class EmployeesController {
   constructor(private readonly employeesService: EmployeesService) {}
 
   @Auth(ROLES.MANAGER)
+  @ApiResponse({
+    status: 201,
+    example: {
+      employeeId: "UUID",
+      employeeName: "Daniel",
+      employeeEmail: "dani@gmail.com",
+      employeeLastName: "Evaristo",
+      employeePhoneNumber: "3434342"
+    } as Employee
+  })
+
   @Post()
   create(@Body() createEmployeeDto: CreateEmployeeDto) {
     return this.employeesService.create(createEmployeeDto);
@@ -39,7 +54,7 @@ export class EmployeesController {
   @Auth(ROLES.MANAGER)
   @Get('/location/:id')
   findAllLocation(@Param('id')id: string){
-    
+    return this.employeesService.findByLocation(+id)
   }
 
   @Auth(ROLES.EMPLOYEE)
