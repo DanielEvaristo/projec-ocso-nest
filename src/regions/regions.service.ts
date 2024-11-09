@@ -24,6 +24,7 @@ export class RegionsService {
       regionId: id,
     })
     if(!region) throw new NotFoundException("Region not found")
+    return region;
   }
 
   async update(id: number, updateRegionDto: UpdateRegionDto) {
@@ -36,7 +37,7 @@ export class RegionsService {
   }
 
   remove(id: number) {
-    this.regionRepository.delete({
+    return this.regionRepository.delete({
       regionId: id,
     })
   }
