@@ -29,8 +29,15 @@ export class EmployeesController {
   })
 
   @Post()
-  create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return this.employeesService.create(createEmployeeDto);
+  @UseInterceptors(FileInterceptor('employeePhoto'))
+  async create(@Body() createEmployeeDto: CreateEmployeeDto,@UploadedFile() file: Express.Multer.File) {
+    if(!file){
+      return this.employeesService.create(createEmployeeDto);
+    } else {
+      const photoUrl = await this.aswSevice.uploadFile(file)
+      createEmployeeDto.employeePhoto = photoUrl
+      return this.employeesService.create(createEmployeeDto);
+    }
   }
 
   @Auth(ROLES.EMPLOYEE, ROLES.MANAGER)
