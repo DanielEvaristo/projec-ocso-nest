@@ -75,9 +75,13 @@ export class EmployeesController {
     @Param('id', new ParseUUIDPipe({version:'4'})) id: string, 
     @Body() updateEmployeeDto: UpdateEmployeeDto,
     @UploadedFile() file: Express.Multer.File) {
-    const fileUrl = await this.aswSevice.uploadFile(file)
-    updateEmployeeDto.employeePhoto = fileUrl
-    return this.employeesService.update(id, updateEmployeeDto);
+    if(!file){
+      return this.employeesService.update(id, updateEmployeeDto);
+    } else{
+      const fileUrl = await this.aswSevice.uploadFile(file)
+      updateEmployeeDto.employeePhoto = fileUrl
+      return this.employeesService.update(id, updateEmployeeDto);
+    }
   }
 
   @Auth(ROLES.MANAGER)
