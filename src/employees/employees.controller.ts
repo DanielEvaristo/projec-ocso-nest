@@ -75,7 +75,7 @@ export class EmployeesController {
     @Param('id', new ParseUUIDPipe({version:'4'})) id: string, 
     @Body() updateEmployeeDto: UpdateEmployeeDto,
     @UploadedFile() file: Express.Multer.File) {
-    if(!file){
+    if(file.originalname === "undefined"){
       return this.employeesService.update(id, updateEmployeeDto);
     } else{
       const fileUrl = await this.aswSevice.uploadFile(file)
