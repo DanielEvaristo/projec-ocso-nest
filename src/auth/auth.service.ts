@@ -9,6 +9,7 @@ import { LoginUserDto } from "./dto/login-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { Employee } from "src/employees/entities/employee.entity";
 import { Manager } from "src/managers/entities/manager.entity";
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -57,9 +58,10 @@ export class AuthService {
     return token;
   }
 
-  async updateUser(userEmail: string, updateUserDto: UpdateUserDto){
+  async updateUser(id: string, updateUserDto: UpdateUserDto){
+    updateUserDto.userPassword = bcrypt.hashSync(updateUserDto.userPassword, 5);
     const newUserData = await this.userRepository.preload({
-      userEmail,
+      userId: id,
       ...updateUserDto
     })
     this.userRepository.save(newUserData)
